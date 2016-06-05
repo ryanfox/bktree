@@ -30,18 +30,20 @@ class Tree(object):
             node.parent = curr
 
     def search(self, num, max_distance):
-        return self._search(self.root, num, max_distance)
+        candidates = [self.root]
+        found = []
 
-    def _search(self, node, num, max_distance):
-        if self._hamming(node.num, num) > max_distance:
-            return []
+        while len(candidates) > 0:
+            node = candidates.pop(0)
+            distance = self._hamming(node.num, num)
 
-        distance = self._hamming(node.num, num)
-        children = [node]
-        for child in node.children.values():
-            if distance - max_distance <= self._hamming(node.num, child.num) <= distance + max_distance:
-                children.extend(self._search(child, num, max_distance))
-        return children
+            if distance > max_distance:
+                continue
+
+            found.append(node)
+            candidates.extend(node[child] for child in node.children if distance - max_distance <= child <= distance + max_distance)
+
+        return found
 
     @staticmethod
     def _hamming(num1, num2):
