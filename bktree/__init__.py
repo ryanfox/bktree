@@ -1,1 +1,1 @@
-from bktree.bktree import Node, Tree
+from .bktree import Node, Tree
