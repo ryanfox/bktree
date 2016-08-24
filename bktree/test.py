@@ -22,3 +22,6 @@ class BkTreeTest(unittest.TestCase):
         tree = bktree.Tree(words)
 
         self.assertEqual(tree.search(0xff, 0), [])
+
+if __name__ == '__main__':
+    unittest.main()
