@@ -1,7 +1,9 @@
 class Node(object):
-    def __init__(self, num):
+    def __init__(self, num, user_data=None):
         self.num = num
         self.children = {}
+        if user_data is not None:
+            self.user_data = user_data
 
     def __str__(self):
         return self.num
@@ -14,11 +16,11 @@ class Tree(object):
             for num in nums:
                 self.add(num)
 
-    def add(self, num):
+    def add(self, num, user_data=None):
         if self.root is None:
-            self.root = Node(num)
+            self.root = Node(num, user_data)
         else:
-            node = Node(num)
+            node = Node(num, user_data)
             curr = self.root
             distance = self._hamming(num, curr.num)
 
