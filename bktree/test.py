@@ -23,5 +23,13 @@ class BkTreeTest(unittest.TestCase):
 
         self.assertEqual(tree.search(0xff, 0), [])
 
+    def test_search(self):
+        a = 0b101
+        b = 0b000
+        tree = bktree.Tree([a, b])
+
+        self.assertEqual(len(tree.search(b, 2)), 2)
+        self.assertEqual(len(tree.search(b, 1)), 1)
+
 if __name__ == '__main__':
     unittest.main()

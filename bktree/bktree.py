@@ -37,12 +37,11 @@ class Tree(object):
             node = candidates.pop(0)
             distance = self._hamming(node.num, num)
 
-            if distance > max_distance:
-                continue
+            if distance <= max_distance:
+                found.append(node)
 
-            found.append(node)
             candidates.extend(child_node for child_dist, child_node in node.children.items()
-                    if distance - max_distance <= child_dist <= distance + max_distance)
+                              if distance - max_distance <= child_dist <= distance + max_distance)
 
         return found
 
