@@ -1,7 +1,21 @@
+import sys
+
+
+if sys.version_info < (3, 10, 0):
+    def hamming(num1, num2):
+        return bin(num1 ^ num2).count('1')
+else:
+    def hamming(num1, num2):
+        return (num1 ^ num2).bit_count()
+
+
 class Node(object):
-    def __init__(self, num):
+    __slots__ = ('num', 'children', 'parent')
+
+    def __init__(self, num, parent=None):
         self.num = num
         self.children = {}
+        self.parent = None
 
     def __str__(self):
         return str(self.num)
@@ -18,24 +32,22 @@ class Tree(object):
         if self.root is None:
             self.root = Node(num)
         else:
-            node = Node(num)
             curr = self.root
-            distance = self._hamming(num, curr.num)
+            distance = hamming(num, curr.num)
 
             while distance in curr.children:
                 curr = curr.children[distance]
-                distance = self._hamming(num, curr.num)
+                distance = hamming(num, curr.num)
 
-            curr.children[distance] = node
-            node.parent = curr
+            curr.children[distance] = Node(num, parent=curr)
 
     def search(self, num, max_distance):
         candidates = [self.root]
         found = []
 
-        while len(candidates) > 0:
+        while candidates:
             node = candidates.pop(0)
-            distance = self._hamming(node.num, num)
+            distance = hamming(node.num, num)
 
             if distance <= max_distance:
                 found.append(node)
@@ -44,7 +56,3 @@ class Tree(object):
                               if distance - max_distance <= child_dist <= distance + max_distance)
 
         return found
-
-    @staticmethod
-    def _hamming(num1, num2):
-        return bin(num1 ^ num2).count('1')
